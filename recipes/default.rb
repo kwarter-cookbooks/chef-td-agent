@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: td-agent
+# Cookbook Name:: fluentd
 # Recipe:: default
 #
 # Copyright 2011, Treasure Data, Inc.
@@ -29,15 +29,35 @@ directory '/etc/td-agent/' do
   action :create
 end
 
+directory '/var/log/td-agent/tmp' do
+  owner  'td-agent'
+  group  'td-agent'
+  mode   '0755'
+  action :create
+end
+
+package "libssl0.9.8" do
+  action :install
+end
+
 case node['platform']
 when "ubuntu"
   dist = node['lsb']['codename']
-  source = (dist == 'precise') ? "http://packages.treasure-data.com/precise/" : "http://packages.treasure-data.com/debian/"
-  apt_repository "treasure-data" do
-    uri source
-    distribution dist
-    components ["contrib"]
-    action :add
+  if dist == 'raring' 
+    remote_file "#{Chef::Config[:file_cache_path]}/td-agent_#{node['td_agent']['version']}_amd64.deb"  do
+      source "http://packages.treasure-data.com/debian/pool/contrib/t/td-agent/td-agent_#{node['td_agent']['version']}_amd64.deb"
+    end
+    dpkg_package "#{Chef::Config[:file_cache_path]}/td-agent_#{node['td_agent']['version']}_amd64.deb" do
+      action :install
+    end
+  else
+    source = (dist == 'precise') ? "http://packages.treasure-data.com/precise/" : "http://packages.treasure-data.com/debian/"
+    apt_repository "treasure-data" do
+      uri source
+      distribution dist
+      components ["contrib"]
+      action :add
+    end
   end
 when "centos", "redhat"
   yum_repository "treasure-data" do
@@ -45,6 +65,7 @@ when "centos", "redhat"
     action :add
   end
 end
+
 
 template "/etc/td-agent/td-agent.conf" do
   mode "0644"
@@ -67,14 +88,14 @@ end
 node[:td_agent][:plugins].each do |plugin|
   if plugin.is_a?(Hash)
     plugin_name, plugin_attributes = plugin.first
-    td_agent_gem plugin_name do
+    fluentd_gem plugin_name do
       plugin true
       %w{action version source options gem_binary}.each do |attr|
         send(attr, plugin_attributes[attr]) if plugin_attributes[attr]
       end
     end
   elsif plugin.is_a?(String)
-    td_agent_gem plugin do
+    fluentd_gem plugin do
       plugin true
     end
   end
