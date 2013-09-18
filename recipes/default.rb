@@ -33,6 +33,7 @@ directory '/var/log/td-agent/tmp' do
   owner  'td-agent'
   group  'td-agent'
   mode   '0755'
+  recursive 'true'
   action :create
 end
 
