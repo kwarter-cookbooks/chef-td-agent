@@ -5,6 +5,10 @@
 # Copyright 2011, Treasure Data, Inc.
 #
 
+package 'libpq-dev' do
+  action :install
+end
+
 group 'td-agent' do
   group_name 'td-agent'
   gid        403
@@ -67,10 +71,15 @@ when "centos", "redhat"
   end
 end
 
-
-template "/etc/td-agent/td-agent.conf" do
-  mode "0644"
-  source "td-agent.conf.erb"
+search("users", "id:kwarter") do |u|
+  template "/etc/td-agent/td-agent.conf" do
+    mode "0644"
+    source "td-agent.conf.erb"
+    variables(
+          :access_key    => u['access_key'],
+          :access_secret => u['access_secret']
+    )
+  end
 end
 
 package "td-agent" do
