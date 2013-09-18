@@ -79,7 +79,7 @@
   aws_key_id AKIAJKPF4K3UDOYSC7RQ
   aws_sec_key UYyvvO0PmiENjf2e5y7DGGBbEpHLsNMMoHHjvYtJ
   s3_bucket kwarter-fluentd
-  s3_endpoint s3-us-west-1.amazonaws.com
+  s3_endpoint <%= node['td_agent']['s3endpoint'] %>
   path /bucket
   buffer_path /var/log/td-agent/buffer/s3
 
