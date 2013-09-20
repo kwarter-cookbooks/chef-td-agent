@@ -40,17 +40,7 @@
 </source>
 
 # Kwarter Specific
-## File Test
-<source>
-  type tail
-  path /var/log/mcollective.log
-  tag test.file.tail
-  format csv
-  keys letter, time, level, message
-  pos_file /var/log/td-agent/tmp/syslog.pos
-</source>
-
-## Added UDP support, requires plugin
+## UDP support, requires plugin
  <source>
    type udp
    bind 127.0.0.1
@@ -58,37 +48,19 @@
  </source>
 
 
-
-
-######### OUTPUTS ###########
-## S3 output
-<match *.*.*>
-  type s3
-
-  aws_key_id <%= @access_key %>
-  aws_sec_key <%= @access_secret %>
-  s3_bucket <%= node['td_agent']['s3bucket'] %>
-  s3_endpoint <%= node['td_agent']['s3endpoint'] %>
-  path s3output
-  buffer_path /var/log/td-agent/buffer/s3
-
-  time_slice_format %Y%m%d%H%M
-  utc
-  
-  flush_interval 5m
-  buffer_chunk_limit 5m
-</match>
-
 <source>
     type tail
-    path /tmp/redshift_test.json
-    pos_file /var/log/td-agent/tmp/redshift_test_json.pos
-    tag redshift.json
+    path /tmp/test.json
+    pos_file /tmp/test.json.pos
+    tag credits_spent
     format /^(?<log>.*)$/
 </source>
 
 
-<match redshift.json>
+######### OUTPUTS ###########
+
+
+<match credits_spent>
     type redshift
 
     # s3 (for copying data to redshift)
@@ -110,10 +82,143 @@
 
     # buffer
     buffer_type file
-    buffer_path /var/log/td-agent/buffer/redshift
-    flush_interval 15m
+    buffer_path /var/log/td-agent/buffer/redshift_credits_spent
+    flush_interval 1m
     buffer_chunk_limit 1g
 </match>
 
+<match event_checkin>
+    type redshift
 
+    # s3 (for copying data to redshift)
+    aws_key_id <%= @access_key %>
+    aws_sec_key <%= @access_secret %>
+    s3_bucket <%= node['td_agent']['s3bucket'] %>
+    s3_endpoint <%= node['td_agent']['s3endpoint'] %>
+    path events_checkin
+    timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M
+
+    # redshift
+    redshift_host <%= node['td_agent']['redshift']['host'] %>
+    redshift_port <%= node['td_agent']['redshift']['port'] %>
+    redshift_dbname <%= node['td_agent']['redshift']['dbname'] %>
+    redshift_user <%= node['td_agent']['redshift']['user'] %>
+    redshift_password <%= node['td_agent']['redshift']['password'] %>
+    redshift_tablename events_checkin
+    file_type <%= node['td_agent']['redshift']['filetype'] %>
+
+    # buffer
+    buffer_type file
+    buffer_path /var/log/td-agent/buffer/redshift_event_checkin
+    flush_interval 1m
+    buffer_chunk_limit 1g
+</match>
+
+<match game_close>
+    type redshift
+
+    # s3 (for copying data to redshift)
+    aws_key_id <%= @access_key %>
+    aws_sec_key <%= @access_secret %>
+    s3_bucket <%= node['td_agent']['s3bucket'] %>
+    s3_endpoint <%= node['td_agent']['s3endpoint'] %>
+    path game_close
+    timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M
+
+    # redshift
+    redshift_host <%= node['td_agent']['redshift']['host'] %>
+    redshift_port <%= node['td_agent']['redshift']['port'] %>
+    redshift_dbname <%= node['td_agent']['redshift']['dbname'] %>
+    redshift_user <%= node['td_agent']['redshift']['user'] %>
+    redshift_password <%= node['td_agent']['redshift']['password'] %>
+    redshift_tablename game_close
+    file_type <%= node['td_agent']['redshift']['filetype'] %>
+
+    # buffer
+    buffer_type file
+    buffer_path /var/log/td-agent/buffer/redshift_game_close
+    flush_interval 1m
+    buffer_chunk_limit 1g
+</match>
+
+<match game_response_scored>
+    type redshift
+
+    # s3 (for copying data to redshift)
+    aws_key_id <%= @access_key %>
+    aws_sec_key <%= @access_secret %>
+    s3_bucket <%= node['td_agent']['s3bucket'] %>
+    s3_endpoint <%= node['td_agent']['s3endpoint'] %>
+    path game_response_scored
+    timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M
+
+    # redshift
+    redshift_host <%= node['td_agent']['redshift']['host'] %>
+    redshift_port <%= node['td_agent']['redshift']['port'] %>
+    redshift_dbname <%= node['td_agent']['redshift']['dbname'] %>
+    redshift_user <%= node['td_agent']['redshift']['user'] %>
+    redshift_password <%= node['td_agent']['redshift']['password'] %>
+    redshift_tablename game_response_scored
+    file_type <%= node['td_agent']['redshift']['filetype'] %>
+
+    # buffer
+    buffer_type file
+    buffer_path /var/log/td-agent/buffer/redshift_game_response_scored
+    flush_interval 1m
+    buffer_chunk_limit 1g
+</match>
+
+<match game_response>
+    type redshift
+
+    # s3 (for copying data to redshift)
+    aws_key_id <%= @access_key %>
+    aws_sec_key <%= @access_secret %>
+    s3_bucket <%= node['td_agent']['s3bucket'] %>
+    s3_endpoint <%= node['td_agent']['s3endpoint'] %>
+    path game_response
+    timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M
+
+    # redshift
+    redshift_host <%= node['td_agent']['redshift']['host'] %>
+    redshift_port <%= node['td_agent']['redshift']['port'] %>
+    redshift_dbname <%= node['td_agent']['redshift']['dbname'] %>
+    redshift_user <%= node['td_agent']['redshift']['user'] %>
+    redshift_password <%= node['td_agent']['redshift']['password'] %>
+    redshift_tablename game_response
+    file_type <%= node['td_agent']['redshift']['filetype'] %>
+
+    # buffer
+    buffer_type file
+    buffer_path /var/log/td-agent/buffer/redshift_game_response
+    flush_interval 1m
+    buffer_chunk_limit 1g
+</match>
+
+<match game_triggered>
+    type redshift
+
+    # s3 (for copying data to redshift)
+    aws_key_id <%= @access_key %>
+    aws_sec_key <%= @access_secret %>
+    s3_bucket <%= node['td_agent']['s3bucket'] %>
+    s3_endpoint <%= node['td_agent']['s3endpoint'] %>
+    path game_triggered
+    timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M
+
+    # redshift
+    redshift_host <%= node['td_agent']['redshift']['host'] %>
+    redshift_port <%= node['td_agent']['redshift']['port'] %>
+    redshift_dbname <%= node['td_agent']['redshift']['dbname'] %>
+    redshift_user <%= node['td_agent']['redshift']['user'] %>
+    redshift_password <%= node['td_agent']['redshift']['password'] %>
+    redshift_tablename game_triggered
+    file_type <%= node['td_agent']['redshift']['filetype'] %>
+
+    # buffer
+    buffer_type file
+    buffer_path /var/log/td-agent/buffer/redshift_game_triggered
+    flush_interval 1m
+    buffer_chunk_limit 1g
+</match>
 
