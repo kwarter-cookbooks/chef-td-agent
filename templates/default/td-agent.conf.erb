@@ -76,6 +76,7 @@
     redshift_port <%= node['td_agent']['redshift']['port'] %>
     redshift_dbname <%= node['td_agent']['redshift']['dbname'] %>
     redshift_user <%= node['td_agent']['redshift']['user'] %>
+    redshift_schemaname <%= node.chef_environment %>
     redshift_password <%= node['td_agent']['redshift']['password'] %>
     redshift_tablename credits_spent
     file_type <%= node['td_agent']['redshift']['filetype'] %>
@@ -104,6 +105,7 @@
     redshift_dbname <%= node['td_agent']['redshift']['dbname'] %>
     redshift_user <%= node['td_agent']['redshift']['user'] %>
     redshift_password <%= node['td_agent']['redshift']['password'] %>
+    redshift_schemaname <%= node.chef_environment %>
     redshift_tablename events_checkin
     file_type <%= node['td_agent']['redshift']['filetype'] %>
 
