@@ -49,11 +49,8 @@ case node['platform']
 when "ubuntu"
   dist = node['lsb']['codename']
   if dist == 'raring' 
-    remote_file "#{Chef::Config[:file_cache_path]}/td-agent_#{node['td_agent']['version']}_amd64.deb"  do
-      source "http://packages.treasure-data.com/debian/pool/contrib/t/td-agent/td-agent_#{node['td_agent']['version']}_amd64.deb"
-    end
-    dpkg_package "#{Chef::Config[:file_cache_path]}/td-agent_#{node['td_agent']['version']}_amd64.deb" do
-      action :install
+    package "td-agent" do
+      version "#{node['td_agent']['version']}"
     end
   else
     source = (dist == 'precise') ? "http://packages.treasure-data.com/precise/" : "http://packages.treasure-data.com/debian/"
