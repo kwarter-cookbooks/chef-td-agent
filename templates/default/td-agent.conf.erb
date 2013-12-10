@@ -223,3 +223,31 @@
     flush_interval 1m
     buffer_chunk_limit 1g
 </match>
+
+<match push_notifications>
+    type redshift
+
+    # s3 (for copying data to redshift)
+    aws_key_id <%= @access_key %>
+    aws_sec_key <%= @access_secret %>
+    s3_bucket <%= node['td_agent']['s3bucket'] %>
+    s3_endpoint <%= node['td_agent']['s3endpoint'] %>
+    path <%= node.chef_environment %>/push_notifications
+    timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node.fqdn %>
+
+    # redshift
+    redshift_host <%= node['td_agent']['redshift']['host'] %>
+    redshift_port <%= node['td_agent']['redshift']['port'] %>
+    redshift_dbname <%= node['td_agent']['redshift']['dbname'] %>
+    redshift_schemaname <%= node.chef_environment %>
+    redshift_user <%= node['td_agent']['redshift']['user'] %>
+    redshift_password <%= node['td_agent']['redshift']['password'] %>
+    redshift_tablename push_notifications
+    file_type <%= node['td_agent']['redshift']['filetype'] %>
+
+    # buffer
+    buffer_type file
+    buffer_path /var/log/td-agent/buffer/redshift_push_notifications
+    flush_interval 1m
+    buffer_chunk_limit 1g
+</match>
