@@ -251,3 +251,59 @@
     flush_interval 1m
     buffer_chunk_limit 1g
 </match>
+
+<match sent_friend_invitations>
+    type redshift
+
+    # s3 (for copying data to redshift)
+    aws_key_id <%= @access_key %>
+    aws_sec_key <%= @access_secret %>
+    s3_bucket <%= node['td_agent']['s3bucket'] %>
+    s3_endpoint <%= node['td_agent']['s3endpoint'] %>
+    path <%= node.chef_environment %>/sent_friend_invitations
+    timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node.fqdn %>
+
+    # redshift
+    redshift_host <%= node['td_agent']['redshift']['host'] %>
+    redshift_port <%= node['td_agent']['redshift']['port'] %>
+    redshift_dbname <%= node['td_agent']['redshift']['dbname'] %>
+    redshift_schemaname <%= node.chef_environment %>
+    redshift_user <%= node['td_agent']['redshift']['user'] %>
+    redshift_password <%= node['td_agent']['redshift']['password'] %>
+    redshift_tablename sent_friend_invitations
+    file_type <%= node['td_agent']['redshift']['filetype'] %>
+
+    # buffer
+    buffer_type file
+    buffer_path /var/log/td-agent/buffer/redshift_sent_friend_invitations
+    flush_interval 1m
+    buffer_chunk_limit 1g
+</match>
+
+<match accepted_friend_invitations>
+    type redshift
+
+    # s3 (for copying data to redshift)
+    aws_key_id <%= @access_key %>
+    aws_sec_key <%= @access_secret %>
+    s3_bucket <%= node['td_agent']['s3bucket'] %>
+    s3_endpoint <%= node['td_agent']['s3endpoint'] %>
+    path <%= node.chef_environment %>/accepted_friend_invitations
+    timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node.fqdn %>
+
+    # redshift
+    redshift_host <%= node['td_agent']['redshift']['host'] %>
+    redshift_port <%= node['td_agent']['redshift']['port'] %>
+    redshift_dbname <%= node['td_agent']['redshift']['dbname'] %>
+    redshift_schemaname <%= node.chef_environment %>
+    redshift_user <%= node['td_agent']['redshift']['user'] %>
+    redshift_password <%= node['td_agent']['redshift']['password'] %>
+    redshift_tablename accepted_friend_invitations
+    file_type <%= node['td_agent']['redshift']['filetype'] %>
+
+    # buffer
+    buffer_type file
+    buffer_path /var/log/td-agent/buffer/redshift_accepted_friend_invitations
+    flush_interval 1m
+    buffer_chunk_limit 1g
+</match>
