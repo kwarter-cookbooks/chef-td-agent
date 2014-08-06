@@ -65,7 +65,7 @@
     s3_bucket <%= node['td_agent']['s3bucket'] %>
     s3_endpoint <%= node['td_agent']['s3endpoint'] %>
     path <%= node.chef_environment %>/credits_spent
-    timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node.fqdn %>
+    timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node['name'] || node['fqdn'] %>
 
     # redshift
     redshift_host <%= node['td_agent']['redshift']['host'] %>
