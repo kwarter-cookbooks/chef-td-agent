@@ -93,7 +93,7 @@
     s3_bucket <%= node['td_agent']['s3bucket'] %>
     s3_endpoint <%= node['td_agent']['s3endpoint'] %>
     path <%= node.chef_environment %>/events_checkin
-    timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node.fqdn %>
+    timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node['name'] || node['fqdn'] %>
 
     # redshift
     redshift_host <%= node['td_agent']['redshift']['host'] %>
@@ -121,7 +121,7 @@
     s3_bucket <%= node['td_agent']['s3bucket'] %>
     s3_endpoint <%= node['td_agent']['s3endpoint'] %>
     path <%= node.chef_environment %>/game_close
-    timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node.fqdn %>
+    timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node['name'] || node['fqdn'] %>
 
     # redshift
     redshift_host <%= node['td_agent']['redshift']['host'] %>
@@ -149,7 +149,7 @@
     s3_bucket <%= node['td_agent']['s3bucket'] %>
     s3_endpoint <%= node['td_agent']['s3endpoint'] %>
     path <%= node.chef_environment %>/game_response_scored
-    timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node.fqdn %>
+    timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node['name'] || node['fqdn'] %>
 
     # redshift
     redshift_host <%= node['td_agent']['redshift']['host'] %>
@@ -177,7 +177,7 @@
     s3_bucket <%= node['td_agent']['s3bucket'] %>
     s3_endpoint <%= node['td_agent']['s3endpoint'] %>
     path <%= node.chef_environment %>/game_response
-    timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node.fqdn %>
+    timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node['name'] || node['fqdn'] %>
 
     # redshift
     redshift_host <%= node['td_agent']['redshift']['host'] %>
@@ -205,7 +205,7 @@
     s3_bucket <%= node['td_agent']['s3bucket'] %>
     s3_endpoint <%= node['td_agent']['s3endpoint'] %>
     path <%= node.chef_environment %>/game_triggered
-    timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node.fqdn %>
+    timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node['name'] || node['fqdn'] %>
 
     # redshift
     redshift_host <%= node['td_agent']['redshift']['host'] %>
@@ -233,7 +233,7 @@
     s3_bucket <%= node['td_agent']['s3bucket'] %>
     s3_endpoint <%= node['td_agent']['s3endpoint'] %>
     path <%= node.chef_environment %>/push_notifications
-    timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node.fqdn %>
+    timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node['name'] || node['fqdn'] %>
 
     # redshift
     redshift_host <%= node['td_agent']['redshift']['host'] %>
@@ -261,7 +261,7 @@
     s3_bucket <%= node['td_agent']['s3bucket'] %>
     s3_endpoint <%= node['td_agent']['s3endpoint'] %>
     path <%= node.chef_environment %>/sent_friend_invitations
-    timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node.fqdn %>
+    timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node['name'] || node['fqdn'] %>
 
     # redshift
     redshift_host <%= node['td_agent']['redshift']['host'] %>
@@ -289,7 +289,7 @@
     s3_bucket <%= node['td_agent']['s3bucket'] %>
     s3_endpoint <%= node['td_agent']['s3endpoint'] %>
     path <%= node.chef_environment %>/accepted_friend_invitations
-    timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node.fqdn %>
+    timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node['name'] || node['fqdn'] %>
 
     # redshift
     redshift_host <%= node['td_agent']['redshift']['host'] %>
