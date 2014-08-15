@@ -9,6 +9,9 @@ package 'libpq-dev' do
   action :install
 end
 
+Chef::Recipe.send(:include, TdAgent::Version)
+Chef::Provider.send(:include, TdAgent::Version)
+
 group 'td-agent' do
   group_name 'td-agent'
   gid        403
@@ -48,22 +51,30 @@ end
 case node['platform']
 when "ubuntu"
   dist = node['lsb']['codename']
-  if dist == 'raring' 
-    package "td-agent" do
-      version "#{node['td_agent']['version']}"
+  source =
+    if major.nil? || major == '1'
+      # version 1.x or no version
+      if dist == 'precise'
+        'http://packages.treasuredata.com/precise/'
+      else
+        'http://packages.treasuredata.com/debian/'
+      end
+    else
+      # version 2.x or later
+      "http://packages.treasuredata.com/#{major}/ubuntu/#{dist}/"
     end
-  else
-    source = (dist == 'precise') ? "http://packages.treasure-data.com/precise/" : "http://packages.treasure-data.com/debian/"
-    apt_repository "treasure-data" do
-      uri source
-      distribution dist
-      components ["contrib"]
-      action :add
-    end
+
+  apt_repository "treasure-data" do
+    uri source
+    distribution dist
+    components ["contrib"]
+    key "http://packages.treasuredata.com/GPG-KEY-td-agent"
+    action :add
   end
-when "centos", "redhat"
+when "centos", "redhat", "amazon"
   yum_repository "treasure-data" do
-    url "http://packages.treasure-data.com/redhat/$basearch"
+    url "http://packages.treasuredata.com/redhat/$basearch"
+    gpgkey "http://packages.treasuredata.com/GPG-KEY-td-agent"
     action :add
   end
 end
@@ -79,17 +90,19 @@ search("users", "id:kwarter") do |u|
   end
 end
 
-package "td-agent" do
-  options value_for_platform(
-    ["ubuntu", "debian"] => {"default" => "-f --force-yes"},
-    "default" => nil
-  )
-  action :upgrade
+if node['td_agent']['includes']
+  directory "/etc/td-agent/conf.d" do
+    mode "0755"
+  end
 end
 
-service "td-agent" do
-  action [ :enable, :start ]
-  subscribes :restart, resources(:template => "/etc/td-agent/td-agent.conf")
+package "td-agent" do
+  if node[:td_agent][:pinning_version]
+    action :install
+    version node[:td_agent][:version]
+  else
+    action :upgrade
+  end
 end
 
 node[:td_agent][:plugins].each do |plugin|
@@ -106,4 +119,9 @@ node[:td_agent][:plugins].each do |plugin|
       plugin true
     end
   end
+end
+
+service "td-agent" do
+  action [ :enable, :start ]
+  subscribes :restart, resources(:template => "/etc/td-agent/td-agent.conf")
 end

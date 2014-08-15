@@ -12,6 +12,12 @@ The {knife-github-cookbooks}[https://github.com/websterclay/knife-github-cookboo
     $ cd chef-repo
     $ knife cookbook github install treasure-data/chef-td-agent
 
+== NOTICE
+
+This cookbook may be used on Amazon Linux but we cannot guarantee if td-agent will work properly because
+AWS doesn\'t guarantee binary compatibility with RHEL (they aim to be "as compatible as possible").
+If users encounter any compatibility issues with td-agent on Amazon Linux, they should contact AWS.
+
 = REQUIREMENTS:
 
 This cookbook has these external dependencies.
@@ -42,6 +48,31 @@ This installs the latest version of +fluent-plugin-flowcounter+ and version 0.0.
       { "rewrite" => { "version" => "0.0.9" } }
     ]
 
+== version
+
+You can install latest td-agent 2 using `version` attribute and major version.
+
+    node[:td_agent][:version] = '2'
+
+You can also specify full version.
+
+    node[:td_agent][:version] = '2.0.4'
+
+== pinning_version and version
+
+If `pinning_version` is true, then `versoin`s td-agent will be installed. The default `version` is latest version.
+
+- node[:td_agent][:pinning_version]
+- node[:td_agent][:version]
+
+In this case, you should set full version to `node[:td_agent][:version]`.
+
+=== Limitation
+
+`pinning_version` and `version` attributes are now available for `rpm` package.
+The td-agent repository now use `reprepro` for building Deb repository.
+`reprepro` can not handle multiple versions of the same package.
+
 = RESOURCES / PROVIDERS:
 
 == td_agent_gem
@@ -67,10 +98,10 @@ plugin::        If true, no need to prefix the gem name w/ "fluent-plugin-". Def
 
 === Examples
 
-This installs +fluent-plugin-datacounter+ (v0.1.8)
+This installs +fluent-plugin-datacounter+ (v0.2.0)
 
     td_agent_gem "datacounter" do
-      version "0.1.8"
+      version "0.2.0"
       plugin true
     end
 
@@ -80,6 +111,17 @@ This installs the latest version of +aws-sdk+
       plugin false
     end
 
+== includes
+
+Optionally include /etc/td-agent/conf.d/*.conf files (i.e. symlinks, other recipes, etc.)
+
+- node[:td_agent][:includes] = false
+
+== default_config
+
+Optionally prevent /etc/td-agent/td-agent.conf from including default config.
+
+- node[:td_agent][:default_config] = true
 
 = USAGE:
 
@@ -101,3 +143,11 @@ This is an example role file.
         ]
       }
     )
+
+= HTTP API Options
+
+- node[:td_agent][:in_http][:enable_api] = true. 
+
+Access to the API may be turend off by setting enable_api to false. This may be of particular use when 
+td-agent is being used on endpoint systems that are forwarding logs to a centralized td-agent server.
+
