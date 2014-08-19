@@ -51,6 +51,13 @@ end
 case node['platform']
 when "ubuntu"
   dist = node['lsb']['codename']
+
+  #
+  # HACK on action:
+  #
+  # 1.x versions are not supported on Trusty and 2.0 version have issues while pg gem (Ruby 2.1)
+  dist = 'squeeze' if dist == 'trusty'
+
   source =
     if major.nil? || major == '1'
       # version 1.x or no version
