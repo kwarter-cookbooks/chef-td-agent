@@ -76,7 +76,7 @@ include conf.d/*.conf
     aws_sec_key <%= @access_secret %>
     s3_bucket <%= node['td_agent']['s3bucket'] %>
     s3_endpoint <%= node['td_agent']['s3endpoint'] %>
-    path <%= node.chef_environment %>/credits_spent
+    path <%= node.chef_environment.gsub('_eu', '') %>/credits_spent
     timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node['name'] || node['fqdn'] %>
 
     # redshift
@@ -84,7 +84,7 @@ include conf.d/*.conf
     redshift_port <%= node['td_agent']['redshift']['port'] %>
     redshift_dbname <%= node['td_agent']['redshift']['dbname'] %>
     redshift_user <%= node['td_agent']['redshift']['user'] %>
-    redshift_schemaname <%= node.chef_environment %>
+    redshift_schemaname <%= node.chef_environment.gsub('_eu', '') %>
     redshift_password <%= node['td_agent']['redshift']['password'] %>
     redshift_tablename credits_spent
     file_type <%= node['td_agent']['redshift']['filetype'] %>
@@ -104,7 +104,7 @@ include conf.d/*.conf
     aws_sec_key <%= @access_secret %>
     s3_bucket <%= node['td_agent']['s3bucket'] %>
     s3_endpoint <%= node['td_agent']['s3endpoint'] %>
-    path <%= node.chef_environment %>/events_checkin
+    path <%= node.chef_environment.gsub('_eu', '') %>/events_checkin
     timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node['name'] || node['fqdn'] %>
 
     # redshift
@@ -112,7 +112,7 @@ include conf.d/*.conf
     redshift_port <%= node['td_agent']['redshift']['port'] %>
     redshift_dbname <%= node['td_agent']['redshift']['dbname'] %>
     redshift_user <%= node['td_agent']['redshift']['user'] %>
-    redshift_schemaname <%= node.chef_environment %>
+    redshift_schemaname <%= node.chef_environment.gsub('_eu', '') %>
     redshift_password <%= node['td_agent']['redshift']['password'] %>
     redshift_tablename events_checkin
     file_type <%= node['td_agent']['redshift']['filetype'] %>
@@ -132,14 +132,14 @@ include conf.d/*.conf
     aws_sec_key <%= @access_secret %>
     s3_bucket <%= node['td_agent']['s3bucket'] %>
     s3_endpoint <%= node['td_agent']['s3endpoint'] %>
-    path <%= node.chef_environment %>/game_close
+    path <%= node.chef_environment.gsub('_eu', '') %>/game_close
     timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node['name'] || node['fqdn'] %>
 
     # redshift
     redshift_host <%= node['td_agent']['redshift']['host'] %>
     redshift_port <%= node['td_agent']['redshift']['port'] %>
     redshift_dbname <%= node['td_agent']['redshift']['dbname'] %>
-    redshift_schemaname <%= node.chef_environment %>
+    redshift_schemaname <%= node.chef_environment.gsub('_eu', '') %>
     redshift_user <%= node['td_agent']['redshift']['user'] %>
     redshift_password <%= node['td_agent']['redshift']['password'] %>
     redshift_tablename game_close
@@ -160,7 +160,7 @@ include conf.d/*.conf
     aws_sec_key <%= @access_secret %>
     s3_bucket <%= node['td_agent']['s3bucket'] %>
     s3_endpoint <%= node['td_agent']['s3endpoint'] %>
-    path <%= node.chef_environment %>/game_response_scored
+    path <%= node.chef_environment.gsub('_eu', '') %>/game_response_scored
     timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node['name'] || node['fqdn'] %>
 
     # redshift
@@ -168,7 +168,7 @@ include conf.d/*.conf
     redshift_port <%= node['td_agent']['redshift']['port'] %>
     redshift_dbname <%= node['td_agent']['redshift']['dbname'] %>
     redshift_user <%= node['td_agent']['redshift']['user'] %>
-    redshift_schemaname <%= node.chef_environment %>
+    redshift_schemaname <%= node.chef_environment.gsub('_eu', '') %>
     redshift_password <%= node['td_agent']['redshift']['password'] %>
     redshift_tablename game_response_scored
     file_type <%= node['td_agent']['redshift']['filetype'] %>
@@ -188,14 +188,14 @@ include conf.d/*.conf
     aws_sec_key <%= @access_secret %>
     s3_bucket <%= node['td_agent']['s3bucket'] %>
     s3_endpoint <%= node['td_agent']['s3endpoint'] %>
-    path <%= node.chef_environment %>/game_response
+    path <%= node.chef_environment.gsub('_eu', '') %>/game_response
     timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node['name'] || node['fqdn'] %>
 
     # redshift
     redshift_host <%= node['td_agent']['redshift']['host'] %>
     redshift_port <%= node['td_agent']['redshift']['port'] %>
     redshift_dbname <%= node['td_agent']['redshift']['dbname'] %>
-    redshift_schemaname <%= node.chef_environment %>
+    redshift_schemaname <%= node.chef_environment.gsub('_eu', '') %>
     redshift_user <%= node['td_agent']['redshift']['user'] %>
     redshift_password <%= node['td_agent']['redshift']['password'] %>
     redshift_tablename game_response
@@ -216,14 +216,14 @@ include conf.d/*.conf
     aws_sec_key <%= @access_secret %>
     s3_bucket <%= node['td_agent']['s3bucket'] %>
     s3_endpoint <%= node['td_agent']['s3endpoint'] %>
-    path <%= node.chef_environment %>/game_triggered
+    path <%= node.chef_environment.gsub('_eu', '') %>/game_triggered
     timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node['name'] || node['fqdn'] %>
 
     # redshift
     redshift_host <%= node['td_agent']['redshift']['host'] %>
     redshift_port <%= node['td_agent']['redshift']['port'] %>
     redshift_dbname <%= node['td_agent']['redshift']['dbname'] %>
-    redshift_schemaname <%= node.chef_environment %>
+    redshift_schemaname <%= node.chef_environment.gsub('_eu', '') %>
     redshift_user <%= node['td_agent']['redshift']['user'] %>
     redshift_password <%= node['td_agent']['redshift']['password'] %>
     redshift_tablename game_triggered
@@ -244,14 +244,14 @@ include conf.d/*.conf
     aws_sec_key <%= @access_secret %>
     s3_bucket <%= node['td_agent']['s3bucket'] %>
     s3_endpoint <%= node['td_agent']['s3endpoint'] %>
-    path <%= node.chef_environment %>/push_notifications
+    path <%= node.chef_environment.gsub('_eu', '') %>/push_notifications
     timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node['name'] || node['fqdn'] %>
 
     # redshift
     redshift_host <%= node['td_agent']['redshift']['host'] %>
     redshift_port <%= node['td_agent']['redshift']['port'] %>
     redshift_dbname <%= node['td_agent']['redshift']['dbname'] %>
-    redshift_schemaname <%= node.chef_environment %>
+    redshift_schemaname <%= node.chef_environment.gsub('_eu', '') %>
     redshift_user <%= node['td_agent']['redshift']['user'] %>
     redshift_password <%= node['td_agent']['redshift']['password'] %>
     redshift_tablename push_notifications
@@ -272,14 +272,14 @@ include conf.d/*.conf
     aws_sec_key <%= @access_secret %>
     s3_bucket <%= node['td_agent']['s3bucket'] %>
     s3_endpoint <%= node['td_agent']['s3endpoint'] %>
-    path <%= node.chef_environment %>/sent_friend_invitations
+    path <%= node.chef_environment.gsub('_eu', '') %>/sent_friend_invitations
     timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node['name'] || node['fqdn'] %>
 
     # redshift
     redshift_host <%= node['td_agent']['redshift']['host'] %>
     redshift_port <%= node['td_agent']['redshift']['port'] %>
     redshift_dbname <%= node['td_agent']['redshift']['dbname'] %>
-    redshift_schemaname <%= node.chef_environment %>
+    redshift_schemaname <%= node.chef_environment.gsub('_eu', '') %>
     redshift_user <%= node['td_agent']['redshift']['user'] %>
     redshift_password <%= node['td_agent']['redshift']['password'] %>
     redshift_tablename sent_friend_invitations
@@ -300,14 +300,14 @@ include conf.d/*.conf
     aws_sec_key <%= @access_secret %>
     s3_bucket <%= node['td_agent']['s3bucket'] %>
     s3_endpoint <%= node['td_agent']['s3endpoint'] %>
-    path <%= node.chef_environment %>/accepted_friend_invitations
+    path <%= node.chef_environment.gsub('_eu', '') %>/accepted_friend_invitations
     timestamp_key_format year=%Y/month=%m/day=%d/hour=%H/%Y%m%d-%H%M-<%= node['name'] || node['fqdn'] %>
 
     # redshift
     redshift_host <%= node['td_agent']['redshift']['host'] %>
     redshift_port <%= node['td_agent']['redshift']['port'] %>
     redshift_dbname <%= node['td_agent']['redshift']['dbname'] %>
-    redshift_schemaname <%= node.chef_environment %>
+    redshift_schemaname <%= node.chef_environment.gsub('_eu', '') %>
     redshift_user <%= node['td_agent']['redshift']['user'] %>
     redshift_password <%= node['td_agent']['redshift']['password'] %>
     redshift_tablename accepted_friend_invitations
